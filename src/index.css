@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-text-primary: var(--text-primary);
+  --color-bg-page: var(--bg-page);
+  --color-bg-secondary: var(--bg-secondary);
+}
+
+/* Light Mode: Default values */
+:root {
+  --text-primary: #1e293b; /* Dark color */
+  --bg-page: #ffffff;      /* White/light color */
+  --bg-secondary: #f1f5f9; /* Light gray */
+}
+
+/* Dark Mode: Overridden values */
+.dark {
+  --text-primary: #f8fafc; /* Light color */
+  --bg-page: #0f172a;      /* Deep dark color */
+  --bg-secondary: #1e293b; /* Darker gray */
+}
