@@ -37,12 +37,12 @@ const CartSummary = ({ cart, products, checkout }) => {
                 })}
             </div>
 
-            <button
-                onClick={checkout}
-                className="mt-6 w-full bg-gradient-to-r from-orange-600 to-fuchsia-600 text-white py-3 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] shadow-lg"
+            <Link
+            to="/checkout"
+            className="mt-6 block text-center w-full bg-gradient-to-r from-orange-600 to-fuchsia-600 text-white py-3 rounded-xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.01] shadow-lg"
             >
-                Proceed to Checkout
-            </button>
+            Proceed to Checkout
+            </Link>
         </div>
     );
 };

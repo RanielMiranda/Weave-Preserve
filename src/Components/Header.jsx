@@ -18,18 +18,22 @@ const Header = ({
     setIsMenuOpen(false);
   };
 
-  const NavLink = ({ to, children }) => (
-    <button
-      onClick={() => navigateTo(to)}
-      className={`transition-colors font-medium ${
-        currentPage === to
-          ? "text-orange-600 font-bold border-b-2 border-orange-600 pb-1"
-          : "text-slate-900 hover:text-orange-600"
-      }`}
-    >
-      {children}
-    </button>
-  );
+  const NavLink = ({ to, children }) => {
+    const normalizedTo = to === "" ? "home" : to;
+
+    return (
+      <button
+        onClick={() => navigateTo(to)}
+        className={`transition-colors font-medium ${
+          currentPage === normalizedTo
+            ? "text-orange-600 font-bold border-b-2 border-orange-600 pb-1"
+            : "text-slate-900 hover:text-orange-600"
+        }`}
+      >
+        {children}
+      </button>
+    );
+  };
 
   const MobileNavLink = ({ to, children }) => (
     <button
@@ -59,6 +63,7 @@ const Header = ({
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
+            <NavLink to="">Home</NavLink>
             <NavLink to="marketplace">Marketplace</NavLink>
             <NavLink to="stories">Stories</NavLink>
             <NavLink to="campaigns">Support</NavLink>
@@ -74,7 +79,9 @@ const Header = ({
               <button
                 className="p-2 text-slate-900 hover:text-orange-600 transition-colors relative"
                 aria-label="Shopping cart"
+                onClick={() => navigateTo("checkout")}
               >
+                
                 <ShoppingCart className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold border-2 border-white">
                   0

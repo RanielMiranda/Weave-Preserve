@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Img1 from '../../../Assets/Photos/Hero1.jpg';
+import Img2 from '../../../Assets/Photos/Hero2.jpg';
+import Img3 from '../../../Assets/Photos/Hero3.jpg';
+import Img4 from '../../../Assets/Photos/Hero4.jpg';
+
 
 const Hero = () => {
   return (
@@ -41,10 +46,13 @@ const Hero = () => {
                 <span>Explore Marketplace</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:bg-white hover:text-slate-900 transition-all duration-300">
+              <Link
+                to ="/stories"
+                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:bg-white hover:text-slate-900 transition-all duration-300"
+                >
                 <Play className="w-5 h-5" />
                 <span>Watch Stories</span>
-              </button>
+            </Link>
             </div>
           </motion.div>
 
@@ -57,13 +65,13 @@ const Hero = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <img
-                  src="https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-                  alt="Inabel textile"
+                  src={Img1}
+                  alt="Narda's Handwoven arts"
                   className="w-full h-48 object-cover rounded-lg shadow-lg"
                   loading="lazy"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1582582621959-48d27397dc69?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                  src={Img2}
                   alt="Traditional weaving tools"
                   className="w-full h-32 object-cover rounded-lg shadow-lg"
                   loading="lazy"
@@ -71,13 +79,13 @@ const Hero = () => {
               </div>
               <div className="space-y-4 mt-8">
                 <img
-                  src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                  src={Img3}
                   alt="Kalinga weave pattern"
                   className="w-full h-32 object-cover rounded-lg shadow-lg"
                   loading="lazy"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                  src={Img4}
                   alt="Ikat textile detail"
                   className="w-full h-48 object-cover rounded-lg shadow-lg"
                   loading="lazy"
