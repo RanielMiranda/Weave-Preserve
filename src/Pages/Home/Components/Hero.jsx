@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -33,10 +34,13 @@ const Hero = () => {
               and be part of preserving centuries-old traditions for future generations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-gradient-to-r from-orange-600 to-fuchsia-500 text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+              <Link 
+                to="/marketplace" 
+                className="bg-gradient-to-r from-orange-600 to-fuchsia-500 text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+              >
                 <span>Explore Marketplace</span>
                 <ArrowRight className="w-5 h-5" />
-              </button>
+              </Link>
               <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:bg-white hover:text-slate-900 transition-all duration-300">
                 <Play className="w-5 h-5" />
                 <span>Watch Stories</span>

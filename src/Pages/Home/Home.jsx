@@ -1,10 +1,10 @@
 import react from 'react';
-import Header from '../Components/Header.jsx';
+import Header from '../../Components/Header.jsx';
 import Hero from './Components/Hero.jsx';
 import FeaturedProducts from './Components/Featuredproducts.jsx';
 import StoryTelling from './Components/Storytelling.jsx';
 import Fundraising from './Components/Fundraising.jsx';
-import Footer from '../Components/Footer.jsx';
+import Footer from '../../Components/Footer.jsx';
 
 
 export default function Home() {

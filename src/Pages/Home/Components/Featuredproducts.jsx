@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom'; 
 
 const FeaturedProducts = () => {
   const products = [
@@ -119,9 +120,12 @@ const FeaturedProducts = () => {
         </div>
 
         <div className="text-center mt-12">
-          <button className="bg-gradient-to-r from-orange-600 to-fuchsia-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+          <Link 
+            to="/marketplace" 
+            className="inline-block bg-gradient-to-r from-orange-600 to-fuchsia-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+          >
             View All Products
-          </button>
+          </Link>
         </div>
       </div>
     </section>

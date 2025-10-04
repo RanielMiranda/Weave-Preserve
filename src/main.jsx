@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Home from './Home/Home.jsx'; // Corrected import path
-import './index.css'; // Assuming you have a global CSS file for Tailwind base
+import './index.css'; 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './Pages/Home/Home.jsx'; 
+import Marketplace from './Pages/Marketplace/Marketplace.jsx'
+import Campaigns from './Pages/Campaigns/Campaigns.jsx'
+import Stories from './Pages/Stories/Stories.jsx'
+import Auth from './Pages/Auth/Auth.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -10,7 +14,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* Add more routes here as needed */}
+        <Route path ="/marketplace" element = {<Marketplace />} />
+        <Route path = "/campaigns" element = {<Campaigns />} />
+        <Route path = "/stories" element = {< Stories/>}/>
+        <Route path = "/auth" element = {<Auth /> }/>
       </Routes>
     </Router>
   </React.StrictMode>
