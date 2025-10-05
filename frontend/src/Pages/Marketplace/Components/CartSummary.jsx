@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShoppingCart } from 'lucide-react';
+import { Link } from 'react-router-dom'
 
 const CartSummary = ({ cart, products, checkout }) => {
     if (cart.length === 0) return null;
