@@ -8,6 +8,13 @@ npx tailwindcss init -p
 
 # starting
 
+cd frontend
+
 npx vite --port=4000
 
+
 # backend dependencies installation
+
+cd backend
+
+pip install -r requirements.txt
