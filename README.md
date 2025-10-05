@@ -1,8 +1,11 @@
 # Front end dependencies installation
 
-npm install npm install firebase lucide-react react-router-dom framer-motion react-toastify
+npm install npm install firebase lucide-react react-router-dom framer-motion react-toastify axios
 
 npm install -D tailwindcss postcss autoprefixer
+
+npm install @headlessui/react
+
 
 npx tailwindcss init -p
 

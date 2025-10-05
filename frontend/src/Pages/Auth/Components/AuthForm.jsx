@@ -111,7 +111,8 @@ export default function AuthForm({
                 // 1. Store the token (e.g., in localStorage or a state manager)
                 localStorage.setItem("isLoggedIn", true);
                 localStorage.setItem("isAdmin", isAdmin);
-                
+                localStorage.setItem("access_token", data.access_token);
+
                 // 2. Notify parent component of success
                 setFormMessage({ type: 'success', text: 'Login successful! Redirecting...' });
                 

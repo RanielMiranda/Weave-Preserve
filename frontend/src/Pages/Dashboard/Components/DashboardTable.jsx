@@ -1,13 +1,8 @@
 // src/Pages/Dashboard/Components/DashboardTable.jsx
 import React from 'react';
 import { Edit, Trash2 } from 'lucide-react';
-import { toast } from 'react-toastify';
 
-const DashboardTable = ({ data, columns }) => {
-  const handleAction = (action, item) => {
-    toast.success(`${action} action performed on ${item.name || item.title || item.customer}`);
-  };
-
+const DashboardTable = ({ data, columns, handleAction }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <table className="w-full">
@@ -29,11 +24,14 @@ const DashboardTable = ({ data, columns }) => {
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((item) => (
             <tr key={item.id}>
-              {columns.map(col => (
-                <td key={col} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {item[col.toLowerCase()]}
-                </td>
-              ))}
+              {columns.map(col => {
+                const key = col.toLowerCase().replace(/\s+/g, '_');
+                return (
+                  <td key={col} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {item[key]}
+                  </td>
+                );
+              })}
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                 <button
                   onClick={() => handleAction('Edit', item)}

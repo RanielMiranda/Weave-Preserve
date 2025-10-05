@@ -5,19 +5,19 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from sqlmodel import Session, select
 
-
-# UPDATED IMPORT PATH
-from database_models import TokenData, User, UserBase
+# Centralized imports for database and models
+from database import get_session
+from database_models import TokenData, User
 
 # --- Security Configuration ---
-# You would normally load these from environment variables in a production app
 SECRET_KEY = "123456asdfg"  # CHANGE THIS IN PRODUCTION
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login") # points to the login endpoint
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # --- Password Hashing Functions ---
 
@@ -45,10 +45,13 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 # --- Dependency to get the current authenticated user ---
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> UserBase:
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), 
+    session: Session = Depends(get_session)
+) -> User:
     """
-    Decodes the JWT token and returns the user's data.
-    Raises an HTTPException if token is invalid or user is not found.
+    Decodes the JWT token, validates its data, and fetches the corresponding
+    user from the database.
     """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -59,21 +62,27 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> UserBase:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("sub")
         is_admin: bool = payload.get("is_admin", False)
+        
         if email is None:
             raise credentials_exception
         
         token_data = TokenData(email=email, is_admin=is_admin)
-        
-        # We simulate the UserBase object from the token data
-        return UserBase(email=str(token_data.email), name="Authenticated User", is_admin=token_data.is_admin)
-        
+
     except JWTError:
         raise credentials_exception
+        
+    # Fetch the user from the database to ensure they exist
+    user = session.exec(select(User).where(User.email == token_data.email)).first()
+    if user is None:
+        raise credentials_exception
+        
+    return user
+
 
 # Dependency to check for admin role
-async def get_current_admin_user(current_user: UserBase = Depends(get_current_user)):
+async def get_current_admin_user(current_user: User = Depends(get_current_user)):
     """
-    Dependency function to check if the current authenticated user is an admin.
+    Dependency that ensures the current user is an administrator.
     """
     if not current_user.is_admin:
         raise HTTPException(
