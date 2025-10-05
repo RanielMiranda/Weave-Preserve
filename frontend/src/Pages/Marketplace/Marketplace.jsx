@@ -44,10 +44,6 @@ const Marketplace = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [cart, setCart] = useState([]); // Array of { id: number, quantity: number }
 
-    /**
-     * Adds a product to the cart or increments its quantity.
-     * @param {number} productId - The ID of the product to add.
-     */
     const addToCart = (productId) => {
         setCart(prev => {
             const existing = prev.find(item => item.id === productId);
@@ -58,15 +54,8 @@ const Marketplace = () => {
             }
             return [...prev, { id: productId, quantity: 1 }];
         });
-        // Assuming react-toastify's container is set up in the main app layout
-        // NOTE: toast is a mock function here as react-toastify needs setup not included in this file.
-        // toast.success('Added to cart!');
         console.log(`Product ${productId} added to cart.`);
     };
-
-    /**
-     * Calculates total and processes checkout.
-     */
     const checkout = () => {
         const total = cart.reduce((sum, item) => {
             const product = productsData.find(p => p.id === item.id);
@@ -93,7 +82,6 @@ const Marketplace = () => {
 
     return (
         <div className="min-h-screen font-sans bg-gray-50">
-            <Header />
             
             <section className="py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -123,8 +111,6 @@ const Marketplace = () => {
                     />
                 </div>
             </section>
-            
-            <Footer />
         </div>
     );
 };

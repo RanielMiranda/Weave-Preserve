@@ -1,26 +1,69 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'; 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './Pages/Home/Home.jsx'; 
-import Marketplace from './Pages/Marketplace/Marketplace.jsx'
-import Campaigns from './Pages/Campaigns/Campaigns.jsx'
-import Stories from './Pages/Stories/Stories.jsx'
-import Auth from './Pages/Auth/Auth.jsx'
-import Checkout from './Pages/Checkout/Checkout.jsx'
-import Dashboard from './Pages/Dashboard/Dashboard.jsx'
+import './index.css'; 
+
+import MainLayout from './Layouts/MainLayout';
+import Home from './Pages/Home/Home.jsx';
+import Marketplace from './Pages/MarketPlace/Marketplace.jsx';
+import Campaigns from './Pages/Campaigns/Campaigns.jsx';
+import Stories from './Pages/Stories/Stories.jsx';
+import Checkout from './Pages/Checkout/Checkout.jsx';
+import Auth from './Pages/Auth/Auth.jsx';
+import Dashboard from './Pages/Dashboard/Dashboard.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path ="/marketplace" element = {<Marketplace />} />
-        <Route path = "/campaigns" element = {<Campaigns />} />
-        <Route path = "/stories" element = {< Stories/>}/>
-        <Route path = "/auth" element = {<Auth /> }/>
-        <Route path = "/checkout" element = {<Checkout /> }/>
-        <Route path = "/Dashboard" element = {<Dashboard />}/>
+        {/* Pages with Header/Footer */}
+        <Route path="/" 
+          element={
+            <MainLayout isLoggedInInfo={true}>
+              <Home />
+            </MainLayout>
+          }
+        />
+        <Route path="/marketplace"
+          element={
+            <MainLayout isLoggedInInfo={true}>
+              <Marketplace />
+            </MainLayout>
+          }
+        />
+        <Route path="/stories"
+          element={
+            <MainLayout isLoggedInInfo={true}>
+              <Stories />
+            </MainLayout>
+          }
+        />
+        <Route path="/campaigns"
+          element={
+            <MainLayout isLoggedInInfo={true}>
+              <Campaigns />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <MainLayout isLoggedInInfo={true}>
+              <Checkout />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <MainLayout isLoggedInInfo={true}>
+              <Dashboard />
+            </MainLayout>
+          }
+        />        
+
+        {/* Pages WITHOUT Header/Footer */}
+        <Route path="/auth" element={<Auth />} />
       </Routes>
     </Router>
   </React.StrictMode>

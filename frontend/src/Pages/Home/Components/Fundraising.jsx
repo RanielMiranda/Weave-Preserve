@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, Users, Target, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom'
 
 // Component renamed to 'Fundraising' to match the import: import Fundraising from './Components/Fundraising.jsx';
 const Fundraising = () => {
@@ -176,9 +177,9 @@ const Fundraising = () => {
         </div>
 
         <div className="text-center mt-12">
-          <button className="bg-white text-orange-600 border-2 border-orange-600 px-10 py-3 rounded-xl font-bold hover:bg-orange-600 hover:text-white transition-all duration-300 shadow-lg">
+          <Link to ='/campaigns' className="bg-white text-orange-600 border-2 border-orange-600 px-10 py-3 rounded-xl font-bold hover:bg-orange-600 hover:text-white transition-all duration-300 shadow-lg">
             View All Campaigns
-          </button>
+          </Link>
         </div>
       </div>
     </section>

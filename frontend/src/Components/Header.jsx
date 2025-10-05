@@ -1,17 +1,27 @@
 // File: src/components/Header.jsx
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingCart, Heart, User, LogOut } from "lucide-react";
-import { useLocation } from "react-router-dom";
 
-const Header = ({ 
-    isLoggedIn = false,
-    onLogout = () => console.log("Logout triggered"),
-}) => {
+export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const currentPage = location.pathname.replace("/", "") || "home";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate();    
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+    setIsAdmin(localStorage.getItem("isAdmin") === "true");
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("accessToken");
+    window.location.href = "/"; 
+  };
 
   const navigateTo = (path) => {
     navigate(path.startsWith("/") ? path : `/${path}`);
@@ -81,7 +91,6 @@ const Header = ({
                 aria-label="Shopping cart"
                 onClick={() => navigateTo("checkout")}
               >
-                
                 <ShoppingCart className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold border-2 border-white">
                   0
@@ -90,9 +99,13 @@ const Header = ({
 
               {isLoggedIn ? (
                 <div className="flex items-center space-x-2">
-                  <NavLink to="admin">Admin</NavLink>
+                  {/* Show Dashboard only if the user is Admin */}
+                  {isAdmin && (
+                    <NavLink to="dashboard">Dashboard</NavLink>
+                  )}
+
                   <button
-                    onClick={onLogout}
+                    onClick={handleLogout}
                     className="p-2 text-slate-900 hover:text-orange-600 transition-colors"
                     aria-label="Logout"
                   >
@@ -134,9 +147,9 @@ const Header = ({
 
             {isLoggedIn ? (
               <>
-                <MobileNavLink to="admin">Admin Dashboard</MobileNavLink>
+                <MobileNavLink to="dashboard">Dashboard</MobileNavLink>
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="text-slate-900 hover:text-orange-600 transition-colors font-medium text-left py-2 w-full flex items-center space-x-2"
                 >
                   <LogOut className="w-5 h-5 inline mr-1" />
@@ -151,6 +164,4 @@ const Header = ({
       </div>
     </header>
   );
-};
-
-export default Header;
+}

@@ -10,12 +10,10 @@ import Fundraising from './Components/Fundraising.jsx';
 export default function Home() {
     return (
         <div className = "w-full h-full">
-            <Header />
             <Hero />
             <FeaturedProducts />            
             <StoryTelling />
-            <Fundraising />
-            <Footer />            
+            <Fundraising />    
         </div>
     ) 
 }

@@ -39,7 +39,6 @@ import { Play, Clock, User, Eye } from 'lucide-react';
 
       return (
         <div className="min-h-screen">
-          <Header />
           <section className="py-16 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
@@ -98,7 +97,6 @@ import { Play, Clock, User, Eye } from 'lucide-react';
               </div>
             </div>
           </section>
-          <Footer />
         </div>
       );
     };

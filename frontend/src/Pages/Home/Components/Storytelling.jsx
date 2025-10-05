@@ -1,6 +1,7 @@
 import React from 'react';
 import { Play, Clock, User } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Storytelling = () => {
   const stories = [
@@ -137,9 +138,9 @@ const Storytelling = () => {
         </div>
 
         <div className="text-center mt-12">
-          <button className="bg-gradient-to-r from-orange-600 to-fuchsia-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+          <Link to = '/stories' className="bg-gradient-to-r from-orange-600 to-fuchsia-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
             Explore All Stories
-          </button>
+          </Link>
         </div>
       </div>
     </section>

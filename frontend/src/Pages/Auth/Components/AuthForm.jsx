@@ -101,20 +101,16 @@ export default function AuthForm({
             const data = await response.json();
             
             if (response.ok) {
-                // The 'data' here is the Token object { access_token: '...', token_type: 'bearer' }
-                
-                // Decode the token payload to determine the role and name
-                // NOTE: In a real app, use a proper JWT decoder library. For simplicity here:
+
                 const parts = data.access_token.split('.');
-                // We're skipping the JOSE/JWT verification step here, only decoding the payload base64
-                // This is generally unsafe, but allows role checking without extra libraries on the client.
+
                 const decodedPayload = JSON.parse(atob(parts[1])); 
                 const userEmail = decodedPayload.sub || formData.email;
                 const isAdmin = decodedPayload.is_admin === true;
 
                 // 1. Store the token (e.g., in localStorage or a state manager)
-                localStorage.setItem('accessToken', data.access_token);
-                localStorage.setItem('userRole', isAdmin ? 'admin' : 'customer');
+                localStorage.setItem("isLoggedIn", true);
+                localStorage.setItem("isAdmin", isAdmin);
                 
                 // 2. Notify parent component of success
                 setFormMessage({ type: 'success', text: 'Login successful! Redirecting...' });
