@@ -18,3 +18,5 @@ npx vite --port=4000
 cd backend
 
 pip install -r requirements.txt
+
+pip install "bcrypt==4.0.1" "passlib[bcrypt]==1.7.4"

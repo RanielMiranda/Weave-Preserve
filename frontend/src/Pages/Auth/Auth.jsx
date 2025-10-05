@@ -17,11 +17,9 @@ export default function Auth() {
     const [formMessage, setFormMessage] = useState({ type: '', text: '' });
     const [errors, setErrors] = useState({});
 
-    const handleAuthSuccess = (targetPage, userName) => {
-        localStorage.setItem("userName", userName);
-
-        if (targetPage === "admin") {
-            navigate("/admin"); // change if you have a different admin route
+    const handleAuthSuccess = (isAdmin) => {
+        if (isAdmin) {
+            navigate("/dashboard");
         } else {
             navigate("/marketplace");
         }

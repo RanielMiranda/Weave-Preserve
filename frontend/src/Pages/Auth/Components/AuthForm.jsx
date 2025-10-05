@@ -110,10 +110,7 @@ export default function AuthForm({
                 // This is generally unsafe, but allows role checking without extra libraries on the client.
                 const decodedPayload = JSON.parse(atob(parts[1])); 
                 const userEmail = decodedPayload.sub || formData.email;
-                const isAdmin = decodedPayload.is_admin || false;
-                
-                const targetPage = isAdmin ? 'dashboard' : '';
-                const userName = userEmail.split('@')[0]; // Simple name extraction for UI
+                const isAdmin = decodedPayload.is_admin === true;
 
                 // 1. Store the token (e.g., in localStorage or a state manager)
                 localStorage.setItem('accessToken', data.access_token);
@@ -124,14 +121,9 @@ export default function AuthForm({
                 
                 setTimeout(() => {
                     if (onAuthSuccess) {
-                        onAuthSuccess(targetPage, userName);
+                        onAuthSuccess(isAdmin);
                     }
                 }, 500);
-
-                // 3. Redirect to pages:
-                // 3.1 if Admin redirect to dashboard
-
-                // 3.2 else redirect to homepage
 
             } else {
                 const errorDetail = data.detail || 'Invalid email or password.';
