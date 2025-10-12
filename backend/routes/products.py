@@ -8,6 +8,7 @@ router = APIRouter(prefix="/products", tags=["Products"])
 
 @router.get("/", response_model=list[ProductRead])
 def list_products(session: Session = Depends(get_session)):
+    
     return session.exec(select(Product)).all()
 
 @router.post("/", response_model=ProductRead)
@@ -42,15 +43,21 @@ def update_product(
     return db_item
 
 @router.delete("/{product_id}")
-def delete_product(
+def archive_product( # Renamed function for clarity
     product_id: int,
     session: Session = Depends(get_session),
     admin=Depends(get_current_admin_user)
 ):
+    """Archives a product by setting its status and archived flag."""
     db_item = session.get(Product, product_id)
     if not db_item:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    session.delete(db_item)
+    db_item.is_archived = True
+    db_item.status = "Archived" # Update status field as well
+    
+    session.add(db_item) # Persist the changes (update)
     session.commit()
-    return {"detail": "Product deleted"}
+    session.refresh(db_item)
+    
+    return {"detail": "Product archived successfully"}

@@ -129,7 +129,9 @@ const Dashboard = () => {
                         <div className="text-center">
                             <AlertTriangle className="mx-auto h-12 w-12 text-red-500" />
                             <h3 className="mt-2 text-lg font-medium text-gray-900">Are you sure?</h3>
-                            <p className="mt-2 text-sm text-gray-500">Do you really want to delete this {itemToDelete && activeTab.slice(0, -1)}? This process cannot be undone.</p>
+                            <p className="mt-2 text-sm text-gray-500">
+                                Do you really want to archive this {itemToDelete && activeTab.slice(0, -1)}? It will be marked **Archived**
+                            </p>
                         </div>
                         <div className="mt-5 sm-mt-6 sm-grid sm-grid-cols-2 sm-gap-3 sm-grid-flow-row-dense">
                             <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none sm-col-start-2 sm-text-sm" onClick={handleConfirmDelete}>

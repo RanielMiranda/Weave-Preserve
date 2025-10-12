@@ -52,6 +52,7 @@ class ProductBase(SQLModel):
     status: str = "Available"
     description: str | None = None
     image: str | None = None
+    is_archived: bool = Field(default=False)     
 
 class Product(ProductBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
