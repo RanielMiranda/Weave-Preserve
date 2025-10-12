@@ -15,7 +15,7 @@ def list_available_products(session: Session = Depends(get_session)):
 @router.get("/all", response_model=list[ProductRead])
 def list_all_products(
     session: Session = Depends(get_session), 
-    admin=Depends(get_current_admin_user) # Keep the admin dependency for security
+    admin=Depends(get_current_admin_user) 
 ):
     # This returns everything in the table
     return session.exec(select(Product)).all()

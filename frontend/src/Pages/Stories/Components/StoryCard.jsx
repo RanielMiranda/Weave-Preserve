@@ -2,12 +2,8 @@
 import React from 'react';
 import { Play, Clock, User, Eye, BookOpen } from 'lucide-react';
 
-/**
- * Renders a single story card component.
- * @param {{ story: { id: number, title: string, excerpt: string, image: string, author: string, readTime: string, type: 'article' | 'video', views: number } }} props
- */
 const StoryCard = ({ story }) => {
-    // Determine the icon for the main body/type indicator
+
     const TypeIcon = story.type === 'video' ? Play : BookOpen;
     
     // Helper function to format views
@@ -15,18 +11,14 @@ const StoryCard = ({ story }) => {
         return views >= 1000 ? `${(views / 1000).toFixed(1)}k` : views;
     };
 
-    // --- MODIFICATION: Define the temporary link destination ---
-    // You would replace this logic with actual React Router links in a full app.
     let linkPath = `/stories/${story.id}`; 
     if (story.id === 1 && story.type === 'article') {
-        linkPath = '/stories/kalinga-patterns'; // Mock path for Article Page
+        linkPath = '/stories/kalinga-patterns'; 
     } else if (story.id === 2 && story.type === 'video') {
-        linkPath = '/stories/elena-video'; // Mock path for Video Page
+        linkPath = '/stories/elena-video'; 
     }
-    // For other IDs, it uses the generic /stories/:id path
 
     return (
-        // Wrap the entire card in an anchor tag with the calculated path
         <a href={linkPath} className="block">
             <div key={story.id} className="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer">
                 

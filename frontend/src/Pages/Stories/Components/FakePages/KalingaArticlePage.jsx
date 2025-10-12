@@ -10,7 +10,7 @@ const KalingaArticlePage = () => {
         id: 1,
         title: "The Sacred Patterns of Kalinga Weaving",
         excerpt: "Discover the spiritual significance behind the geometric patterns that have been passed down through generations of Kalinga weavers.",
-        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+        image: "https://narrastudio.com/cdn/shop/articles/95DD03DF-1433-4A83-9B49-EA773E3DEA25-3950-000002E817E8DF2E_73430612-aa79-486c-80bb-b7aa8defa30a.JPG?v=1574870438",
         author: "Dr. Maria Cawed",
         readTime: "8 min read",
         type: "article",
@@ -28,7 +28,7 @@ const KalingaArticlePage = () => {
         <div className="min-h-screen bg-gray-50 font-sans">
             <main className="py-12 md:py-20">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 bg-white shadow-xl rounded-xl">
-                    <button onClick={() => window.history.back()} className="text-orange-600 hover:text-orange-800 flex items-center mb-6 pt-6 transition">
+                    <button onClick={() => window.history.back()} className="text-white hover:text-orange-800 flex items-center mb-6 transition rounded-full shadow-md bg-orange-600/90 px-2 py-1">
                         <ArrowLeft className="w-5 h-5 mr-2" /> Back to Stories
                     </button>
 

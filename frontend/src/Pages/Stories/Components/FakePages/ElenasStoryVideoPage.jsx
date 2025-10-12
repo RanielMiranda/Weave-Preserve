@@ -1,6 +1,7 @@
 // src/pages/Stories/ElenasStoryVideoPage.jsx
 
-import React from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faYoutube, faVimeoV } from "@fortawesome/free-brands-svg-icons";
 import { Clock, User, Eye, Play, ArrowLeft } from 'lucide-react';
 
 const ElenasStoryVideoPage = () => {
@@ -9,7 +10,7 @@ const ElenasStoryVideoPage = () => {
         id: 2,
         title: "Voices of the Loom: Elena's Story",
         excerpt: "Meet Elena Baggao, a master weaver from Kalinga who has dedicated her life to preserving traditional techniques.",
-        image: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+        image: "https://i.ytimg.com/vi/yUE0X4e7iL4/maxresdefault.jpg",
         author: "Documentary Team",
         readTime: "15 min watch",
         type: "video",
@@ -20,7 +21,7 @@ const ElenasStoryVideoPage = () => {
         <div className="min-h-screen bg-gray-50 font-sans">
             <main className="py-12 md:py-20">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <button onClick={() => window.history.back()} className="text-orange-600 hover:text-orange-800 flex items-center mb-6 transition">
+                    <button onClick={() => window.history.back()} className="text-white hover:text-orange-800 flex items-center mb-6 transition rounded-full shadow-md bg-orange-600/90 px-2 py-1">
                         <ArrowLeft className="w-5 h-5 mr-2" /> Back to Stories
                     </button>
 
@@ -76,8 +77,25 @@ const ElenasStoryVideoPage = () => {
                         <div className="pt-4 border-t">
                              <p className="font-semibold mb-2">Watch on other platforms:</p>
                              <div className="flex space-x-4">
-                                <a href="#" className="text-blue-600 hover:underline">YouTube</a>
-                                <a href="#" className="text-red-600 hover:underline">Vimeo</a>
+                                    {/* YouTube Icon Link */}
+                                    <a 
+                                        href="https://www.youtube.com" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-red-600 hover:text-red-800 text-2xl"
+                                    >
+                                        <FontAwesomeIcon icon={faYoutube} /> Youtube
+                                    </a>
+
+                                    {/* Vimeo Icon Link */}
+                                    <a 
+                                        href="https://www.vimeo.com" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 hover:text-blue-800 text-2xl"
+                                    >
+                                        <FontAwesomeIcon icon={faVimeoV} /> Vimeo
+                                    </a>
                              </div>
                         </div>
                     </div>

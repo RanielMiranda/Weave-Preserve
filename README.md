@@ -2,6 +2,7 @@
 * cd frontend
 * npm install firebase lucide-react react-router-dom framer-motion react-toastify axios @headlessui/react 
 * npm install -D tailwindcss postcss autoprefixer
+* npm install @fortawesome/react-fontawesome @fortawesome/free-brands-svg-icons @fortawesome/fontawesome-svg-core
 
 * npx tailwindcss init -p
 
