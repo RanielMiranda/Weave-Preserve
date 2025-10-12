@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from database_models import Order, OrderCreate, OrderRead, OrderDetail, OrderDetailCreate
-from auth import get_current_admin_user
+from routes.auth import get_current_admin_user
 from database import get_session
 
 router = APIRouter(prefix="/orders", tags=["Orders"])

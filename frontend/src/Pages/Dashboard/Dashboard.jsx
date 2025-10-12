@@ -4,10 +4,10 @@ import axiosInstance from './api/axiosInstance';
 import { dashboardConfig } from './config/dashboardConfig';
 
 import DashboardTabs from './components/DashboardTabs';
-import DashboardToolbar from './components/DashboardToolbar';
-import DashboardTable from './components/DashboardTable';
-import Modal from './components/Modal';
-import FormFields from './components/FormFields';
+import DashboardToolbar from './Components/DashboardToolbar';
+import DashboardTable from './Components/DashboardTable';
+import Modal from './Components/Modal';
+import FormFields from './Components/FormFields';
 import { AlertTriangle } from 'lucide-react';
 
 const Dashboard = () => {
@@ -57,9 +57,14 @@ const Dashboard = () => {
     };
 
     const handleChange = (e) => {
-        const { name, value, type } = e.target;
-        setFormData(prev => ({ ...prev, [name]: type === 'number' ? parseFloat(value) : value }));
-    };
+            const { name, value, type, checked } = e.target; // Destructure 'checked'
+            
+            const newValue = type === 'checkbox' 
+                ? checked // If it's a checkbox, the value is its 'checked' status (true/false)
+                : (type === 'number' ? parseFloat(value) : value); // For number/text inputs
+
+            setFormData(prev => ({ ...prev, [name]: newValue }));
+        };
 
     const handleSubmit = async (e) => {
         e.preventDefault();

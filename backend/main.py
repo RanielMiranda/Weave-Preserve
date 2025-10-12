@@ -8,8 +8,8 @@ from sqlmodel import Session, select
 from database import create_db_and_tables, get_session, engine
 
 # Model and Auth imports
-from database_models import User, UserCreate, UserRead, UserLogin, Token
-from auth import get_password_hash, verify_password, create_access_token
+from database_models import User, UserCreate, UserRead, UserLogin, Token, LoginResponse
+from routes.auth import get_password_hash, verify_password, create_access_token
 
 # Route Imports
 from routes.products import router as products_router
@@ -17,6 +17,7 @@ from routes.videos import router as videos_router
 from routes.infographics import router as infographics_router
 from routes.fundraising import router as fundraising_router
 from routes.orders import router as orders_router
+from routes.users import router as users_router 
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -71,6 +72,7 @@ app.include_router(videos_router)
 app.include_router(infographics_router)
 app.include_router(fundraising_router)
 app.include_router(orders_router)
+app.include_router(users_router)
 
 # --- Authentication Endpoints ---
 
@@ -99,7 +101,7 @@ def register_user(user_in: UserCreate, session: Session = Depends(get_session)):
     session.refresh(db_user)
     return db_user
 
-@app.post("/login", response_model=Token, tags=["Auth"])
+@app.post("/login", response_model=LoginResponse, tags=["Auth"])
 def login_for_access_token(login_data: UserLogin, session: Session = Depends(get_session)):
     """Authenticates user and returns a JWT access token."""
     user = session.exec(select(User).where(User.email == login_data.email)).first()
@@ -113,9 +115,17 @@ def login_for_access_token(login_data: UserLogin, session: Session = Depends(get
     
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.email, "is_admin": user.is_admin},
+        data={"sub": user.email, "is_admin": user.is_admin, "user_id": user.id},
         expires_delta=access_token_expires
     )
     
-    return Token(access_token=access_token, token_type="bearer")
+    # Ensure user.id is present (narrow Optional[int] -> int for the type checker)
+    assert user.id is not None, "User ID missing"
+    
+    return LoginResponse(
+        access_token=access_token, 
+        token_type="bearer",
+        user_id=user.id,
+        is_admin=user.is_admin,
+    )
 

@@ -34,6 +34,10 @@ class Token(SQLModel):
     access_token: str
     token_type: str = "bearer"
 
+class LoginResponse(Token):
+    user_id: int
+    is_admin: bool
+    
 class TokenData(SQLModel):
     email: Optional[str] = None
     is_admin: bool = False

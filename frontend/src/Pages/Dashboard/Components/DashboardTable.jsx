@@ -19,7 +19,14 @@ const DashboardTable = ({ data, columns, handleAction, isEditable }) => (
                     <tr key={item.id}>
                         {columns.map(col => (
                             <td key={col.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {item[col.key]}
+                                {col.key === 'is_admin' ? (
+                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item[col.key] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                        {item[col.key] ? 'Yes' : 'No'}
+                                    </span>
+                                ) : (
+                                    // Default rendering for all other columns
+                                    item[col.key]
+                                )}
                             </td>
                         ))}
                         {isEditable && (

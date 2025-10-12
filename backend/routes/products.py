@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from database_models import Product, ProductCreate, ProductRead
-from auth import get_current_admin_user
+from routes.auth import get_current_admin_user
 from database import get_session
 
 router = APIRouter(prefix="/products", tags=["Products"])

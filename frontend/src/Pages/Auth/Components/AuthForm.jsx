@@ -1,5 +1,6 @@
 import React from 'react';
-import { Eye, EyeOff, User, Mail, Lock, Loader2, Home } from 'lucide-react';
+import { Eye, EyeOff, User, Mail, Lock, Loader2 } from 'lucide-react';
+import TermsModal from './TermsModal.jsx'; 
 
 // Define the base URL for the FastAPI backend (Must match where Uvicorn runs)
 const API_BASE_URL = 'http://localhost:8000'; 
@@ -17,25 +18,33 @@ export default function AuthForm({
     setErrors,
     onAuthSuccess
 }) {
-    const [isLoading, setIsLoading] = React.useState(false);   
+    const [isLoading, setIsLoading] = React.useState(false);  
+    const [agreedToTerms, setAgreedToTerms] = React.useState(false);
+    const [isModalOpen, setIsModalOpen] = React.useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        // Clear message and specific error when user types
-        // Ensure formMessage is an object before accessing properties
         setFormMessage(prev => ({ ...prev, type: '', text: '' }));
-        // Ensure errors is an object before accessing properties
         if (errors?.[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
+        }
+    };
+    
+    const handleAgreementChange = (e) => {
+        setAgreedToTerms(e.target.checked);
+        // Clear terms error when checked
+        if (errors?.terms) {
+            setErrors(prev => ({ ...prev, terms: '' }));
         }
     };
 
     const validateForm = () => {
         const newErrors = {};
-        // Use optional chaining here too, though this is less likely to fail if handleInputChange runs
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Standard email regex
+
         if (!formData?.email) newErrors.email = 'Email is required';
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+        else if (!emailRegex.test(formData.email)) newErrors.email = 'Email is invalid';
         
         if (!formData?.password) newErrors.password = 'Password is required';
         else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
@@ -43,20 +52,20 @@ export default function AuthForm({
         if (!isLogin) {
             if (!formData?.name) newErrors.name = 'Name is required';
             if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+            
+            // Check for Terms and Agreement
+            if (!agreedToTerms) newErrors.terms = 'You must agree to the Terms and Conditions';
         }
         
-        // Ensure setErrors always receives an object
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleRegistration = async () => {
-        // Validation ensures formData exists, but defensive copying is always good
         const payload = {
             email: formData.email,
             password: formData.password,
             name: formData.name,
-            // Assuming no address/shipping info required on initial registration
         };
 
         try {
@@ -71,10 +80,11 @@ export default function AuthForm({
             if (response.ok) {
                 setFormMessage({ type: 'success', text: 'Registration successful! Please sign in with your new account.' });
                 setIsLogin(true);
+
                 setFormData({ email: formData.email, password: '', confirmPassword: '', name: '' });
+                setAgreedToTerms(false); 
             } else {
                 const errorDetail = data.detail || "Registration failed due to an unknown error.";
-                // Ensure setErrors always returns an object
                 setErrors({ general: errorDetail });
                 setFormMessage({ type: 'error', text: errorDetail });
             }
@@ -100,30 +110,24 @@ export default function AuthForm({
 
             const data = await response.json();
             
-            if (response.ok) {
-
-                const parts = data.access_token.split('.');
-
-                const decodedPayload = JSON.parse(atob(parts[1])); 
-                const userEmail = decodedPayload.sub || formData.email;
-                const isAdmin = decodedPayload.is_admin === true;
-
-                // 1. Store the token (e.g., in localStorage or a state manager)
-                localStorage.setItem("isLoggedIn", true);
-                localStorage.setItem("isAdmin", isAdmin);
-                localStorage.setItem("access_token", data.access_token);
-
-                // 2. Notify parent component of success
-                setFormMessage({ type: 'success', text: 'Login successful! Redirecting...' });
+            // Destructure access_token, user_id (snake_case from backend), and is_admin
+            const { access_token, user_id, is_admin } = data; 
+            
+            if (response.ok && access_token) {
                 
-                setTimeout(() => {
-                    if (onAuthSuccess) {
-                        onAuthSuccess(isAdmin);
-                    }
-                }, 500);
+                // Call the success handler with the complete set of required arguments
+                onAuthSuccess(is_admin, user_id, access_token); 
+                
+                // Store data locally
+                localStorage.setItem('token', access_token);
+                localStorage.setItem('user_id', user_id);
+                localStorage.setItem('is_admin', is_admin);
 
+                console.log(data);
+                setFormMessage({ type: 'success', text: 'Sign in successful! Redirecting...' });
+                setFormData({ email: '', password: '', confirmPassword: '', name: '' });
             } else {
-                const errorDetail = data.detail || 'Invalid email or password.';
+                const errorDetail = data.detail || "Invalid credentials or login failed.";
                 setErrors({ general: errorDetail });
                 setFormMessage({ type: 'error', text: errorDetail });
             }
@@ -163,148 +167,186 @@ export default function AuthForm({
     };
 
     return (
-        <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
-            {/* Display general messages/errors safely */}
-            {((errors?.general) || (formMessage?.text)) && (
-                <div className={`px-4 py-3 rounded-lg text-sm font-medium ${getMessageClasses(errors?.general ? 'error' : formMessage?.type)}`}>
-                    {errors?.general || formMessage?.text}
-                </div>
-            )}
+        <>
+            {/* Render the Terms Modal */}
+            <TermsModal 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+            />
 
-            {!isLogin && (
-                <div>
-                    <label htmlFor="name" className="sr-only">Full Name</label>
+            <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
+                {/* General Message/Error Display */}
+                {formMessage.text && (
+                    <div className={`p-3 rounded-lg text-sm ${getMessageClasses(formMessage.type)}`} role="alert">
+                        {formMessage.text}
+                    </div>
+                )}
+                {errors?.general && (
+                    <div className="p-3 rounded-lg text-sm bg-red-50 border border-red-200 text-red-600" role="alert">
+                        {errors.general}
+                    </div>
+                )}
+
+                {/* Name Field (Registration Only) */}
+                {!isLogin && (
                     <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <label htmlFor="name" className="sr-only">Full Name</label>
+                        <div className="flex items-center border border-gray-300 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-orange-500 transition-shadow p-3">
                             <User className="h-5 w-5 text-gray-400" />
+                            <input
+                                id="name"
+                                name="name"
+                                type="text"
+                                required
+                                value={formData.name || ''}
+                                onChange={handleInputChange}
+                                placeholder="Full Name"
+                                className="ml-3 block w-full border-0 p-0 focus:ring-0 placeholder-gray-500 text-gray-900"
+                            />
                         </div>
+                        {errors?.name && <p className="mt-1 text-sm text-red-600 font-medium">{errors.name}</p>}
+                    </div>
+                )}
+
+                {/* Email Field */}
+                <div className="relative">
+                    <label htmlFor="email" className="sr-only">Email address</label>
+                    <div className="flex items-center border border-gray-300 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-orange-500 transition-shadow p-3">
+                        <Mail className="h-5 w-5 text-gray-400" />
                         <input
-                            id="name"
-                            name="name"
-                            type="text"
-                            // FIX: Use optional chaining on formData to prevent crash if it's undefined
-                            value={formData?.name || ''} 
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            required
+                            value={formData.email || ''}
                             onChange={handleInputChange}
-                            className={`appearance-none rounded-lg relative block w-full px-10 py-3 border ${
-                                errors?.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-600'
-                            } placeholder-gray-500 text-gray-900 focus:outline-none focus:border-orange-600 focus:z-10 sm:text-sm transition-colors`}
-                            placeholder="Full Name"
-                            required={!isLogin}
+                            placeholder="Email address"
+                            className="ml-3 block w-full border-0 p-0 focus:ring-0 placeholder-gray-500 text-gray-900"
                         />
                     </div>
-                    {errors?.name && <p className="mt-1 text-sm text-red-600 font-medium">{errors.name}</p>}
+                    {errors?.email && <p className="mt-1 text-sm text-red-600 font-medium">{errors.email}</p>}
                 </div>
-            )}
 
-            <div>
-                <label htmlFor="email" className="sr-only">Email address</label>
+                {/* Password Field */}
                 <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Mail className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        // FIX: Use optional chaining on formData
-                        value={formData?.email || ''}
-                        onChange={handleInputChange}
-                        className={`appearance-none rounded-lg relative block w-full px-10 py-3 border ${
-                            errors?.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-600'
-                        } placeholder-gray-500 text-gray-900 focus:outline-none focus:border-orange-600 focus:z-10 sm:text-sm transition-colors`}
-                        placeholder="Email address"
-                        required
-                    />
-                </div>
-                {errors?.email && <p className="mt-1 text-sm text-red-600 font-medium">{errors.email}</p>}
-            </div>
-
-            <div>
-                <label htmlFor="password" className="sr-only">Password</label>
-                <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <label htmlFor="password" className="sr-only">Password</label>
+                    <div className="flex items-center border border-gray-300 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-orange-500 transition-shadow p-3">
                         <Lock className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                        id="password"
-                        name="password"
-                        type={showPassword ? 'text' : 'password'}
-                        // FIX: Use optional chaining on formData
-                        value={formData?.password || ''}
-                        onChange={handleInputChange}
-                        className={`appearance-none rounded-lg relative block w-full px-10 py-3 border ${
-                            errors?.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-600'
-                        } placeholder-gray-500 text-gray-900 focus:outline-none focus:border-orange-600 focus:z-10 sm:text-sm transition-colors`}
-                        placeholder="Password"
-                        required
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <input
+                            id="password"
+                            name="password"
+                            type={showPassword ? 'text' : 'password'}
+                            autoComplete={isLogin ? 'current-password' : 'new-password'}
+                            required
+                            value={formData.password || ''}
+                            onChange={handleInputChange}
+                            placeholder="Password"
+                            className="ml-3 block w-full border-0 p-0 focus:ring-0 placeholder-gray-500 text-gray-900"
+                        />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="text-gray-400 hover:text-gray-600 p-1"
+                            className="text-gray-400 hover:text-gray-600 transition-colors ml-2 p-1"
                             aria-label={showPassword ? 'Hide password' : 'Show password'}
                         >
                             {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                         </button>
                     </div>
+                    {errors?.password && <p className="mt-1 text-sm text-red-600 font-medium">{errors.password}</p>}
                 </div>
-                {errors?.password && <p className="mt-1 text-sm text-red-600 font-medium">{errors.password}</p>}
-            </div>
 
-            {!isLogin && (
-                <div>
-                    <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+                {/* Confirm Password Field (Registration Only) */}
+                {!isLogin && (
                     <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+                        <div className="flex items-center border border-gray-300 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-orange-500 transition-shadow p-3">
                             <Lock className="h-5 w-5 text-gray-400" />
+                            <input
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                type={showPassword ? 'text' : 'password'}
+                                autoComplete="new-password"
+                                required
+                                value={formData.confirmPassword || ''}
+                                onChange={handleInputChange}
+                                placeholder="Confirm Password"
+                                className="ml-3 block w-full border-0 p-0 focus:ring-0 placeholder-gray-500 text-gray-900"
+                            />
                         </div>
-                        <input
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            type={showPassword ? 'text' : 'password'}
-                            // FIX: Use optional chaining on formData
-                            value={formData?.confirmPassword || ''}
-                            onChange={handleInputChange}
-                            className={`appearance-none rounded-lg relative block w-full px-10 py-3 border ${
-                                errors?.confirmPassword ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-orange-600'
-                            } placeholder-gray-500 text-gray-900 focus:outline-none focus:border-orange-600 focus:z-10 sm:text-sm transition-colors`}
-                            placeholder="Confirm Password"
-                            required={!isLogin}
-                        />
+                        {errors?.confirmPassword && <p className="mt-1 text-sm text-red-600 font-medium">{errors.confirmPassword}</p>}
                     </div>
-                    {errors?.confirmPassword && <p className="mt-1 text-sm text-red-600 font-medium">{errors.confirmPassword}</p>}
+                )}
+
+                {/* Terms and Agreement Checkbox (Only for Registration) */}
+                {!isLogin && (
+                    <div className={`flex items-start pt-2 ${errors?.terms ? 'mb-1' : 'mb-4'}`}>
+                        <div className="flex items-center h-5">
+                            <input
+                                id="terms"
+                                name="terms"
+                                type="checkbox"
+                                checked={agreedToTerms}
+                                onChange={handleAgreementChange}
+                                className={`h-4 w-4 rounded ${
+                                    errors?.terms ? 'border-red-500 text-red-600' : 'border-gray-300 text-orange-600'
+                                } focus:ring-orange-500 transition-colors`}
+                            />
+                        </div>
+                        <div className="ml-3 text-sm">
+                            <label htmlFor="terms" className="font-medium text-gray-700">
+                                I agree to the 
+                                <button 
+                                    type="button" 
+                                    onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }}
+                                    className="text-orange-600 hover:text-orange-500 font-semibold transition-colors underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ml-1 mr-1"
+                                >
+                                    Terms and Conditions
+                                </button>
+                            </label>
+                        </div>
+                    </div>
+                )}
+                {errors?.terms && <p className="mt-1 text-sm text-red-600 font-medium">{errors.terms}</p>}
+
+                {/* Sign In / Create Account Button */}
+                <div className="pt-2">
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors transform active:scale-98 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    >
+                        {isLoading ? (
+                            <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                        ) : (
+                            isLogin ? 'Sign In' : 'Create Account'
+                        )}
+                    </button>
                 </div>
-            )}
 
-            <div className="pt-2">
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-semibold rounded-lg text-white bg-gradient-to-r from-orange-600 to-fuchsia-500 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 transition-all duration-300 ${isLoading ? 'opacity-60 cursor-not-allowed' : 'transform hover:scale-[1.01]'}`}
-                >
-                    {isLoading ? (
-                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                    ) : (
-                        isLogin ? 'Sign In' : 'Create Account'
-                    )}
-                </button>
-            </div>
-
-            <div className="text-center pt-2">
-                <button
-                    type="button"
-                    onClick={() => {
-                        setIsLogin(!isLogin);
-                        setErrors({});
-                        setFormMessage({ type: '', text: '' });
-                        setFormData({ email: '', password: '', confirmPassword: '', name: isLogin ? '' : formData.name });
-                    }}
-                    className="text-sm font-medium text-orange-600 hover:text-orange-500 transition-colors"
-                >
-                    {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
-                </button>
-            </div>
-        </form>
+                {/* Toggle Sign Up / Sign In link */}
+                <div className="text-center pt-2">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setIsLogin(!isLogin);
+                            setErrors({});
+                            setFormMessage({ type: '', text: '' });
+                            // Clear fields on toggle, keep email for convenience if switching from sign up to sign in
+                            setFormData(prev => ({ 
+                                email: prev.email || '', 
+                                password: '', 
+                                confirmPassword: '', 
+                                name: isLogin ? '' : prev.name || '' 
+                            }));
+                            setAgreedToTerms(false); 
+                        }}
+                        className="text-sm font-medium text-orange-600 hover:text-orange-500 transition-colors"
+                    >
+                        {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
+                    </button>
+                </div>
+            </form>
+        </>
     );
 }
