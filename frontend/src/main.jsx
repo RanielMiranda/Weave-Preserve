@@ -12,6 +12,10 @@ import Checkout from './Pages/Checkout/Checkout.jsx';
 import Auth from './Pages/Auth/Auth.jsx';
 import Dashboard from './Pages/Dashboard/Dashboard.jsx';
 
+{/* FAKE Articles */}
+import KalingaArticlePage from './Pages/Stories/Components/FakePages/KalingaArticlePage.jsx';
+import ElenasStoryVideoPage from './Pages/Stories/Components/FakePages/ElenasStoryVideoPage.jsx';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
@@ -61,6 +65,25 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </MainLayout>
           }
         />        
+
+        {/* FAKE Articles */}
+        <Route 
+          path="/stories/kalinga-patterns"
+          element={
+            <MainLayout isLoggedInInfo={true}>            
+            <KalingaArticlePage />
+            </MainLayout>
+          }
+        />
+
+        <Route 
+          path="/stories/elena-video" 
+          element= {
+            <MainLayout isLoggedInInfo={true}>            
+            <ElenasStoryVideoPage />
+            </MainLayout>
+            }
+          />
 
         {/* Pages WITHOUT Header/Footer */}
         <Route path="/auth" element={<Auth />} />
