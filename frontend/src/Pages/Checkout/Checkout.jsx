@@ -7,6 +7,7 @@ import CartSummary from './Components/CartSummary.jsx'
 import PaymentOptions from './Components/PaymentOptions.jsx'
 import ShippingForm from './Components/ShippingForm.jsx'
 import ToastMessage from './Components/ToastMessage.jsx';
+import PaymentDetailsForm from './Components/PaymentDetailsForm.jsx'; // 👈 NEW
 
 const Checkout = () => {
   /** @type {[CartItem[], React.Dispatch<React.SetStateAction<CartItem[]>>]} */
@@ -37,6 +38,11 @@ const Checkout = () => {
   });
 
   const [paymentMethod, setPaymentMethod] = useState('card');
+  // 👈 NEW: State for payment details (e.g., credit card number)
+  const [paymentDetails, setPaymentDetails] = useState({
+    cardNumber: '',
+    paypalEmail: ''
+  });
   const [toast, setToast] = useState(/** @type {{message: string, type: 'success' | 'error' | '', id: number} | null} */(null));
 
   // --- Calculations ---
@@ -53,6 +59,12 @@ const Checkout = () => {
   const showToast = useCallback((message, type) => {
     setToast({ message, type, id: Date.now() });
     setTimeout(() => setToast(null), 4000); // Auto-hide after 4 seconds
+  }, []);
+  
+  // 👈 NEW: Handler for payment details
+  const handlePaymentDetailsChange = useCallback((e) => {
+      const { name, value } = e.target;
+      setPaymentDetails(prev => ({ ...prev, [name]: value }));
   }, []);
 
   const handleQuantityChange = useCallback((id, newQuantity) => {
@@ -86,19 +98,40 @@ const Checkout = () => {
         showToast('Your cart is empty. Please add items to proceed.', 'error');
         return;
     }
+    
+    // 👈 NEW: Payment details validation (mocked for card)
+    if (paymentMethod === 'card' && paymentDetails.cardNumber.length !== 16) {
+        showToast('Please enter a valid 16-digit card number.', 'error');
+        return;
+    }
+    if (paymentMethod === 'paypal' && !paymentDetails.paypalEmail.includes('@')) {
+        showToast('Please enter a valid PayPal email address.', 'error');
+        return;
+    }
 
     // Mock payment/inventory check
     if (total > 10000 && paymentMethod === 'card') {
       showToast('Card declined: Insufficient funds for transaction.', 'error');
     } else {
-      showToast(`Order placed successfully! Total: ₱${total.toLocaleString()} via ${paymentMethod.toUpperCase()}.`, 'success');
+      // Determine action text
+      const action = paymentMethod === 'cod' ? 'Ordered' : 'Paid';
+      showToast(`Order successfully ${action}! Total: ₱${total.toLocaleString()} via ${paymentMethod.toUpperCase()}.`, 'success');
+      
       // Clear the cart on successful checkout
       setCart([]);
-      // Reset shipping info (optional)
+      // Reset shipping info and payment details
       setShippingInfo({ name: '', email: '', address: '', city: '', zipCode: '' });
+      setPaymentDetails({ cardNumber: '', paypalEmail: '' });
       setPaymentMethod('card');
     }
   };
+  
+  // 👈 NEW: Determine button text
+  const buttonText = useMemo(() => {
+    if (cart.length === 0) return 'Cart is Empty';
+    if (paymentMethod === 'cod') return 'Order Now (Cash on Delivery)';
+    return `Pay Now ₱${total.toLocaleString()}`;
+  }, [cart.length, paymentMethod, total]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 font-sans">
@@ -128,7 +161,7 @@ const Checkout = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Column 1 & 2: Cart Items, Shipping, Payment */}
+            {/* Column 1 & 2: Cart Items, Shipping */}
             <div className="lg:col-span-2 space-y-8">
 
                 {/* Cart Items */}
@@ -159,22 +192,33 @@ const Checkout = () => {
                     shippingInfo={shippingInfo}
                     onShippingChange={handleShippingChange}
                 />
-
-                {/* Payment Method */}
-                <PaymentOptions
-                    paymentMethod={paymentMethod}
-                    onSetPaymentMethod={setPaymentMethod}
-                />
             </div>
 
-            {/* Column 3: Order Summary and Action Button */}
+            {/* Column 3: Order Summary, Payment, and Action Button */}
             <div className="lg:col-span-1 space-y-6 sticky top-20 h-fit">
               <CartSummary
                 subtotal={subtotal}
                 shipping={shipping}
                 total={total}
                 cartLength={cart.length}
+                paymentMethod={paymentMethod} // Pass payment method for display
               />
+              
+              {/* Payment Method Selection */}
+              <PaymentOptions
+                  paymentMethod={paymentMethod}
+                  onSetPaymentMethod={setPaymentMethod}
+              />
+              
+              {/* Conditional Payment Details Form */}
+              {(paymentMethod === 'card' || paymentMethod === 'paypal') && (
+                <PaymentDetailsForm
+                  paymentMethod={paymentMethod}
+                  paymentDetails={paymentDetails}
+                  onPaymentDetailsChange={handlePaymentDetailsChange}
+                />
+              )}
+
 
               {/* Checkout Button */}
               <button
@@ -182,7 +226,7 @@ const Checkout = () => {
                 disabled={cart.length === 0}
                 className="w-full bg-gradient-to-r from-orange-600 to-red-500 text-white py-4 rounded-xl font-extrabold text-lg uppercase tracking-wider shadow-lg transition-all duration-300 hover:from-orange-700 hover:to-red-600 transform hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {cart.length > 0 ? `Pay Now ₱${total.toLocaleString()}` : 'Cart is Empty'}
+                {buttonText} {/* Use the calculated button text */}
               </button>
             </div>
           </div>
