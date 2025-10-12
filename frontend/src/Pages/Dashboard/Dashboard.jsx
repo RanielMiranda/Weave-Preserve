@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from './api/axiosInstance';
+import axiosInstance from './api/axiosInstance.js';
 import { dashboardConfig } from './config/dashboardConfig';
 
 import DashboardTabs from './components/DashboardTabs';
@@ -25,7 +25,13 @@ const Dashboard = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axiosInstance.get(`/${tab}`);
+            let url = `/${tab}`;
+            
+            if (tab === 'products') {
+                url = '/products/all'; 
+            }
+
+            const response = await axiosInstance.get(url);
             setData(response.data);
         } catch (err) {
             console.error("Failed to fetch data:", err);

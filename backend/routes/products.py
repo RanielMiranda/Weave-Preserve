@@ -7,8 +7,17 @@ from database import get_session
 router = APIRouter(prefix="/products", tags=["Products"])
 
 @router.get("/", response_model=list[ProductRead])
-def list_products(session: Session = Depends(get_session)):
-    
+def list_available_products(session: Session = Depends(get_session)):
+    # This filters out any product where is_archived is True
+    statement = select(Product).where(Product.is_archived == False) 
+    return session.exec(statement).all()
+
+@router.get("/all", response_model=list[ProductRead])
+def list_all_products(
+    session: Session = Depends(get_session), 
+    admin=Depends(get_current_admin_user) # Keep the admin dependency for security
+):
+    # This returns everything in the table
     return session.exec(select(Product)).all()
 
 @router.post("/", response_model=ProductRead)
