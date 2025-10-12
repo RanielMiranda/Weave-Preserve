@@ -6,30 +6,30 @@ import { Link } from 'react-router-dom';
 const Storytelling = () => {
   const stories = [
     {
-      id: 1,
-      title: "The Sacred Patterns of Kalinga Weaving",
-      excerpt: "Discover the spiritual significance behind the geometric patterns that have been passed down through generations of Kalinga weavers.",
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      author: "Dr. Maria Cawed",
-      readTime: "8 min read",
-      type: "article",
-      featured: true
+        id: 1,
+        title: "The Sacred Patterns of Kalinga Weaving",
+        excerpt: "Discover the spiritual significance behind the geometric patterns that have been passed down through generations of Kalinga weavers.",
+        image: "https://narrastudio.com/cdn/shop/articles/95DD03DF-1433-4A83-9B49-EA773E3DEA25-3950-000002E817E8DF2E_73430612-aa79-486c-80bb-b7aa8defa30a.JPG?v=1574870438",
+        author: "Dr. Maria Cawed",
+        readTime: "8 min read",
+        type: "article",
+        views: 1250
     },
     {
-      id: 2,
-      title: "Voices of the Loom: Elena's Story",
-      excerpt: "Meet Elena Baggao, a master weaver from Kalinga who has dedicated her life to preserving traditional techniques.",
-      image: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      author: "Documentary Team",
-      readTime: "15 min watch",
-      type: "video",
-      featured: false
+        id: 2,
+        title: "Voices of the Loom: Elena's Story",
+        excerpt: "Meet Elena Baggao, a master weaver from Kalinga who has dedicated her life to preserving traditional techniques.",
+        image: "https://i.ytimg.com/vi/yUE0X4e7iL4/maxresdefault.jpg",
+        author: "Documentary Team",
+        readTime: "15 min watch",
+        type: "video",
+        views: 890
     },
     {
       id: 3,
       title: "The Revival of Inabel in Modern Times",
       excerpt: "How young entrepreneurs are bringing traditional Inabel weaving into contemporary fashion and home decor.",
-      image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "https://media.philstar.com/images/articles/wik5_2018-05-05_18-02-33.jpg",
       author: "Sarah Mendoza",
       readTime: "6 min read",
       type: "article",
@@ -62,7 +62,7 @@ const Storytelling = () => {
               <img
                 src={stories[0].image}
                 alt={stories[0].title}
-                className="w-full h-80 object-cover rounded-lg"
+                className="w-full h-80 object-cover rounded-lg brightness-75"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent rounded-lg"></div>
@@ -104,7 +104,7 @@ const Storytelling = () => {
                     <img
                       src={story.image}
                       alt={story.title}
-                      className="w-24 h-24 object-cover rounded-lg"
+                      className="w-24 h-24 object-cover rounded-lg brightness-75"
                       loading="lazy"
                     />
                     {story.type === 'video' && (

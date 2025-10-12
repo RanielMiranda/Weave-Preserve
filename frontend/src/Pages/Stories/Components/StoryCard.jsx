@@ -27,7 +27,7 @@ const StoryCard = ({ story }) => {
                     <img
                         src={story.image}
                         alt={story.title}
-                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500 brightness-75"
                         loading="lazy"
                         onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/600x400/f3f4f6/333?text=Cultural+Story"; }}
                     />

@@ -36,7 +36,7 @@ const KalingaArticlePage = () => {
                     <img
                         src={story.image}
                         alt={story.title}
-                        className="w-full h-96 object-cover rounded-lg mb-8 shadow-lg"
+                        className="w-full h-96 object-cover rounded-lg mb-8 shadow-lg brightness-75"
                         loading="lazy"
                     />
 
