@@ -1,26 +1,36 @@
-// src/pages/Campaigns/CampaignCard.jsx
 import { useState } from 'react';
 import { formatCurrency, getProgressPercentage } from '../utils.js';
 
 export default function CampaignCard({ campaign }) {
   const [donationAmount, setDonationAmount] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   const donate = () => {
     const amount = parseFloat(donationAmount);
     if (!amount || amount <= 0) {
-      console.error('Please enter a valid donation amount');
+      setShowToast('error');
+      setTimeout(() => setShowToast(false), 2500);
       return;
-    }
-    if (amount > 5000) {
-      console.error('Insufficient funds!');
     } else {
       console.log(`Donation successful! Amount: ₱${amount} for campaign ${campaign.id}`);
       setDonationAmount('');
+      setShowToast('success');
+      setTimeout(() => setShowToast(false), 2500);
     }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-gray-100">
+    <div className="bg-white rounded-xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 border border-gray-100 relative">
+      {showToast === 'success' && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-all">
+          Donation successful!
+        </div>
+      )}
+      {showToast === 'error' && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 transition-all">
+          Invalid donation amount!
+        </div>
+      )}
       <div className="relative">
         <img
           src={campaign.image}

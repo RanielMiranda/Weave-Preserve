@@ -63,14 +63,20 @@ const Dashboard = () => {
     };
 
     const handleChange = (e) => {
-            const { name, value, type, checked } = e.target; // Destructure 'checked'
-            
-            const newValue = type === 'checkbox' 
-                ? checked // If it's a checkbox, the value is its 'checked' status (true/false)
-                : (type === 'number' ? parseFloat(value) : value); // For number/text inputs
+        const { name, value, type, checked } = e.target;
 
-            setFormData(prev => ({ ...prev, [name]: newValue }));
-        };
+        let newValue;
+        if (type === 'checkbox') {
+            newValue = checked;
+        } else if (type === 'number') {
+            const parsed = parseFloat(value);
+            newValue = parsed < 0 ? 0 : parsed; // Prevent negative numbers
+        } else {
+            newValue = value;
+        }
+
+        setFormData(prev => ({ ...prev, [name]: newValue }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -136,12 +142,13 @@ const Dashboard = () => {
                             <AlertTriangle className="mx-auto h-12 w-12 text-red-500" />
                             <h3 className="mt-2 text-lg font-medium text-gray-900">Are you sure?</h3>
                             <p className="mt-2 text-sm text-gray-500">
-                                Do you really want to archive this {itemToDelete && activeTab.slice(0, -1)}? It will be marked **Archived**
+                                {/* if page is manage products change delete to archive*/}
+                                Do you really want to {activeTab === 'products' ? 'archive' : 'delete'} this {activeTab.slice(0, -1)}?
                             </p>
                         </div>
                         <div className="mt-5 sm-mt-6 sm-grid sm-grid-cols-2 sm-gap-3 sm-grid-flow-row-dense">
                             <button type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none sm-col-start-2 sm-text-sm" onClick={handleConfirmDelete}>
-                                Delete
+                                {activeTab === 'products' ? 'Archive' : 'Delete'}
                             </button>
                             <button type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm-mt-0 sm-col-start-1 sm-text-sm" onClick={() => setItemToDelete(null)}>
                                 Cancel

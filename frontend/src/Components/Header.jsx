@@ -64,10 +64,10 @@ export default function Header() {
             className="flex items-center space-x-2 group"
           >
             <div className="w-8 h-8 bg-gradient-to-br from-orange-600 to-fuchsia-500 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-              <span className="text-white font-bold text-sm">CW</span>
+              <span className="text-white font-bold text-sm">WP</span>
             </div>
             <span className="text-xl font-bold text-slate-900">
-              Cordillera Weaving
+              Weave Preserve
             </span>
           </button>
 

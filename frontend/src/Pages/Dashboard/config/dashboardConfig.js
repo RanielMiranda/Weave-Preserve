@@ -15,6 +15,7 @@ export const dashboardConfig = {
             { name: 'status', label: 'Status', type: 'text' },
             { name: 'description', label: 'Description', type: 'textarea' },
             { name: 'image', label: 'Image Path', type: 'text' },
+            { name: 'is_archived', label: 'Is Archived', type: 'checkbox' },
         ],
     },
     videos: {

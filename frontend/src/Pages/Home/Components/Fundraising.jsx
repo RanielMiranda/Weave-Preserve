@@ -14,7 +14,7 @@ const Fundraising = () => {
       goal: 200000,
       supporters: 89,
       daysLeft: 15,
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      image: "https://www.lakwatsero.com/wp-content/uploads/2021/11/Cordillera-Weaves-06.jpg",
       urgent: true
     },
     {
@@ -25,7 +25,7 @@ const Fundraising = () => {
       goal: 150000,
       supporters: 67,
       daysLeft: 28,
-      image: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      image: "https://www.textileschool.com/wp-content/uploads/2025/03/traditional-weavers-working-on-handlooms-in-a-rural-setting.jpg",
       urgent: false
     },
     {
@@ -36,7 +36,7 @@ const Fundraising = () => {
       goal: 100000,
       supporters: 34,
       daysLeft: 42,
-      image: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      image: "https://www.sapiens.org/app/uploads/2020/08/06_Paulette.Crespillo-Cuison_compressed.jpg",
       urgent: false
     }
   ];

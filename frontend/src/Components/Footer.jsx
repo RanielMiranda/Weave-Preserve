@@ -9,9 +9,9 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-orange-600 to-fuchsia-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">CW</span>
+                <span className="text-white font-bold text-sm">WP</span>
               </div>
-              <span className="font-playfair text-xl font-bold">Cordillera Weaving</span>
+              <span className="font-playfair text-xl font-bold">Weave Preserve</span>
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
               Preserving and promoting the traditional handwoven textile heritage of the Cordillera region, 
@@ -36,7 +36,7 @@ const Footer = () => {
               <li><a href="/marketplace" className="text-gray-300 hover:text-orange-600 transition-colors">Marketplace</a></li>
               <li><a href="/stories" className="text-gray-300 hover:text-orange-600 transition-colors">Cultural Stories</a></li>
               <li><a href="/support" className="text-gray-300 hover:text-orange-600 transition-colors">Support Weavers</a></li>
-              <li><a href="/about" className="text-gray-300 hover:text-orange-600 transition-colors">About Us</a></li>
+          
             </ul>
           </div>
 
@@ -49,7 +49,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="w-4 h-4 text-orange-600" />
-                <span className="text-gray-300 text-sm">info@cordilleraweaving.org</span>
+                <span className="text-gray-300 text-sm">info@weavepreserve.org</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-orange-600" />
