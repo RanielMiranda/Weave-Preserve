@@ -19,6 +19,7 @@ from routes.infographics import router as infographics_router
 from routes.fundraising import router as fundraising_router
 from routes.orders import router as orders_router
 from routes.users import router as users_router 
+from routes.donations import router as donations_router
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -84,6 +85,40 @@ INITIAL_PRODUCT_DATA = [
     },
 ]
 
+INITIAL_PRODUCT_DATA = [
+    {
+        "name": "Cordillera Wall Hanging",
+        "price": 595.00,
+        "status": "Available",
+        "description": "Handwoven Wall Decor handmade by our Baguio Locals.",
+        "image": "https://files.catbox.moe/yaap40.jpg",
+        "is_archived": False
+    },
+    {
+        "name": "Inabel Super Brocade Twin Blanket",
+        "price": 8107.81,
+        "status": "Available",
+        "description": "Inabel, sometimes referred to as Abel Iloco or simply Abel, is a weaving tradition native to the Ilocano people of Northern Luzon in the Philippines. The textile it produces is sought after in the fashion and interior design industries due to its softness, durability, suitability in tropical climates, and for its austere design patterns.",
+        "image": "https://files.catbox.moe/wnw7it.webp",
+        "is_archived": False
+    },
+    {
+        "name": "Ikat Weave on Bamboo Table Runner - Red",
+        "price": 2313.62,
+        "status": "Available", # Corrected key and standardized value
+        "description": "These ikat weave bamboo table runners were handcrafted by independent Balinese artisans. Ikat dyeing is a traditional technique that has been passed down through generations. Add these trendy runners to your table for a pop of colour. (Specifications: Handcrafted in Bali, Cotton weave on bamboo, 180 CM L)",
+        "image": "https://files.catbox.moe/hvwfrc.webp",
+        "is_archived": False
+    },
+    {
+        "name": "VMWI1 - Kalinga Infinity Scarf",
+        "price": 3600,
+        "status": "Available",
+        "description": "From Makabayan Wear, this is a more modern scarf design using traditional fabric hand woven by the renowned indigenous weavers of kalinga, Philipipnes",
+        "image": "https://files.catbox.moe/wnfxbd.png"
+    }
+]
+
 # --- INITIALIZATION FUNCTIONS ---
 
 def create_initial_admin(session: Session):
@@ -100,6 +135,17 @@ def create_initial_admin(session: Session):
         session.add(admin_user)
         session.commit()
         print("Initial Admin created.")
+
+    def create_initial_products(session: Session):
+        """Inserts initial product data if the products table is empty."""
+        existing_products = session.exec(select(Product)).first()
+        if not existing_products:
+            print("Inserting initial product data...")
+            for data in INITIAL_PRODUCT_DATA:
+                product = Product(**data)
+                session.add(product)
+            session.commit()
+            print(f"Successfully inserted {len(INITIAL_PRODUCT_DATA)} products.")
 
 def create_initial_campaigns(session: Session):
     """Inserts initial campaign data if the campaigns table is empty."""
@@ -166,6 +212,7 @@ app.include_router(infographics_router)
 app.include_router(fundraising_router)
 app.include_router(orders_router)
 app.include_router(users_router)
+app.include_router(donations_router)
 
 # --- Authentication Endpoints ---
 

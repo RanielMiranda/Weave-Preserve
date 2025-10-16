@@ -108,6 +108,7 @@ class FundraisingBase(SQLModel):
     description: str | None = None
     status: str = "Active"
     collected_amount: float = 0.0
+    image: str | None = None
 
 class Fundraising(FundraisingBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
