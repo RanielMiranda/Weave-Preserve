@@ -1,4 +1,4 @@
-// campaigns.jsx (Updated to fetch data from API)
+// campaigns.jsx (No changes needed)
 import { useState, useEffect } from 'react';
 import CampaignStats from './Components/CampaignStats';
 import CampaignCard from './Components/CampaignCard';

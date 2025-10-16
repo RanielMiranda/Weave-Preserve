@@ -69,19 +69,4 @@ export const dashboardConfig = {
         ],
         fields: [],
     },
-    users: {
-        title: 'Manage Users',
-        icon: User,
-        columns: [
-            { key: 'id', header: 'User ID' },
-            { key: 'email', header: 'Email' },
-            { key: 'is_admin', header: 'Admin' },
-            
-        ],
-        fields: [
-            { name: 'email', label: 'Email', type: 'text' },
-            { name: 'password', label: 'Password', type: 'password' },
-            { name: 'is_admin', label: 'Is Admin', type: 'checkbox' },
-        ],
-    },
 };

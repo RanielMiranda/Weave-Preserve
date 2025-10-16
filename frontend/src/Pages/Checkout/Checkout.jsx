@@ -17,14 +17,14 @@ const Checkout = () => {
       name: "Traditional Inabel Blanket",
       price: 2500,
       quantity: 1,
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+      image: "https://files.catbox.moe/wnw7it.webp"
     },
     {
       id: 2,
       name: "Kalinga Geometric Scarf",
       price: 1800,
       quantity: 2,
-      image: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+      image: "https://files.catbox.moe/wnfxbd.png"
     }
   ]);
 
