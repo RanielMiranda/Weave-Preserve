@@ -1,3 +1,5 @@
+# main.py
+
 from contextlib import asynccontextmanager
 from datetime import timedelta
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -7,8 +9,7 @@ from sqlmodel import Session, select
 # Centralized database imports
 from database import create_db_and_tables, get_session, engine
 
-# Model and Auth imports
-from database_models import User, UserCreate, UserRead, UserLogin, Token, LoginResponse
+from database_models import User, UserCreate, UserRead, UserLogin, Token, LoginResponse, Fundraising, Product
 from routes.auth import get_password_hash, verify_password, create_access_token
 
 # Route Imports
@@ -21,11 +22,74 @@ from routes.users import router as users_router
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+# --- INITIAL DATA DEFINITIONS ---
+
+INITIAL_CAMPAIGN_DATA = [
+    {
+        "title": "Emergency Support for Weaver Families",
+        "description": "Help provide immediate assistance to weaver families affected by recent natural disasters in the region.",
+        "collected_amount": 125000, 
+        "goal_amount": 200000,
+        "supporters": 89,
+        "days_left": 15,
+        "image": "https://www.lakwatsero.com/wp-content/uploads/2021/11/Cordillera-Weaves-06.jpg",
+        "is_urgent": True
+    },
+    {
+        "title": "Traditional Loom Restoration Project",
+        "description": "Restore and maintain traditional looms to ensure the continuation of authentic weaving techniques.",
+        "collected_amount": 85000,
+        "goal_amount": 150000,
+        "supporters": 67,
+        "days_left": 28,
+        "image": "https://www.textileschool.com/wp-content/uploads/2025/03/traditional-weavers-working-on-handlooms-in-a-rural-setting.jpg",
+        "is_urgent": False
+    },
+    {
+        "title": "Youth Weaving Education Program",
+        "description": "Fund educational programs to teach traditional weaving skills to the next generation of artisans.",
+        "collected_amount": 45000,
+        "goal_amount": 100000,
+        "supporters": 34,
+        "days_left": 42,
+        "image": "https://www.sapiens.org/app/uploads/2020/08/06_Paulette.Crespillo-Cuison_compressed.jpg",
+        "is_urgent": False
+    }
+]
+
+INITIAL_PRODUCT_DATA = [
+    {
+        "name": "Kinabakul Heritage Shawl",
+        "description": "A beautifully intricate hand-woven shawl using traditional Kinabakul patterns.",
+        "price": 4500.00,
+        "image": "https://images.unsplash.com/photo-1621379373981-d4193d56f16c",
+        "status": "Available",
+        "is_archived": False
+    },
+    {
+        "name": "Abel Iloco Table Runner",
+        "description": "High-quality cotton table runner woven in the classic Abel Iloco style.",
+        "price": 2800.00,
+        "image": "https://images.unsplash.com/photo-1621379374021-d779f45616b3",
+        "status": "Available",
+        "is_archived": False
+    },
+    {
+        "name": "T'nalak Weave Pouch",
+        "description": "A small pouch made from authentic T'nalak weave, perfect for accessories.",
+        "price": 1200.00,
+        "image": "https://images.unsplash.com/photo-1549414275-58d042d7b1d9",
+        "status": "Available",
+        "is_archived": False
+    },
+]
+
+# --- INITIALIZATION FUNCTIONS ---
+
 def create_initial_admin(session: Session):
     """Checks for users and creates an initial admin if none exist."""
     existing_users = session.exec(select(User)).first()
     if not existing_users:
-        print("--- Creating initial Admin user (admin@weaving.com / adminpass) ---")
         admin_user = User(
             name="Admin User",
             email="admin@weaving.com",
@@ -35,7 +99,32 @@ def create_initial_admin(session: Session):
         )
         session.add(admin_user)
         session.commit()
-        print("--- Initial Admin created successfully. ---")
+        print("Initial Admin created.")
+
+def create_initial_campaigns(session: Session):
+    """Inserts initial campaign data if the campaigns table is empty."""
+    existing_campaigns = session.exec(select(Fundraising)).first() 
+    if not existing_campaigns:
+        print("Inserting initial campaign data...")
+        for data in INITIAL_CAMPAIGN_DATA:
+            # Explicitly cast collected_amount/goal_amount to float if not already done
+            campaign = Fundraising(**data) 
+            session.add(campaign)
+        session.commit()
+        print(f"Successfully inserted {len(INITIAL_CAMPAIGN_DATA)} campaigns.")
+
+def create_initial_products(session: Session):
+    """Inserts initial product data if the products table is empty."""
+    existing_products = session.exec(select(Product)).first()
+    if not existing_products:
+        print("Inserting initial product data...")
+        for data in INITIAL_PRODUCT_DATA:
+            product = Product(**data)
+            session.add(product)
+        session.commit()
+        print(f"Successfully inserted {len(INITIAL_PRODUCT_DATA)} products.")
+
+# --- LIFESPAN CONTEXT MANAGER ---
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -46,9 +135,13 @@ async def lifespan(app: FastAPI):
     # Create a session specifically for the startup event
     with Session(engine) as session:
         create_initial_admin(session)
+        create_initial_campaigns(session)
+        create_initial_products(session) # Call the new product initialization
     
     yield
     print("Application shutting down...")
+
+# --- FASTAPI APP SETUP ---
 
 app = FastAPI(
     title="Cordillera Weaving API",
@@ -128,4 +221,3 @@ def login_for_access_token(login_data: UserLogin, session: Session = Depends(get
         user_id=user.id,
         is_admin=user.is_admin,
     )
-

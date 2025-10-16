@@ -3,6 +3,7 @@ from sqlmodel import Session, select
 from database_models import Fundraising, FundraisingCreate, FundraisingRead
 from routes.auth import get_current_admin_user
 from database import get_session
+from database_models import Donation 
 
 router = APIRouter(prefix="/fundraising", tags=["Fundraising"])
 
@@ -52,6 +53,11 @@ def delete_campaign(
     if not campaign:
         raise HTTPException(status_code=404, detail="Campaign not found")
     
+    donations_to_delete = session.exec(select(Donation).where(Donation.campaign_id == campaign_id)).all()
+    for donation in donations_to_delete:
+        session.delete(donation)
+        
+    # Delete the campaign itself
     session.delete(campaign)
     session.commit()
     return

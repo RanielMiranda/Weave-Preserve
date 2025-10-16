@@ -172,21 +172,18 @@ class OrderDetailRead(OrderDetailBase):
 # ------------------------------
 
 class DonationBase(SQLModel):
-    campaign_id: int
-    title: str
-    goal_amount: float
-    collected_amount: float = 0.0
+    campaign_id: int 
+    amount: float    
 
 class Donation(DonationBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    customer_id: int
 
+    
 class DonationCreate(DonationBase):
-    customer_id: int
+    pass
 
 class DonationRead(DonationBase):
     id: int
-    customer_id: int
 
 # ------------------------------
 # CART MODEL
