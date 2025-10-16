@@ -49,7 +49,6 @@ class TokenData(SQLModel):
 class ProductBase(SQLModel):
     name: str
     price: float
-    status: str = "Available"
     description: str | None = None
     image: str | None = None
     is_archived: bool = Field(default=False)     

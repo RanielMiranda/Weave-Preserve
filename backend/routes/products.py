@@ -50,23 +50,3 @@ def update_product(
     session.commit()
     session.refresh(db_item)
     return db_item
-
-@router.delete("/{product_id}")
-def archive_product( # Renamed function for clarity
-    product_id: int,
-    session: Session = Depends(get_session),
-    admin=Depends(get_current_admin_user)
-):
-    """Archives a product by setting its status and archived flag."""
-    db_item = session.get(Product, product_id)
-    if not db_item:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    db_item.is_archived = True
-    db_item.status = "Archived" # Update status field as well
-    
-    session.add(db_item) # Persist the changes (update)
-    session.commit()
-    session.refresh(db_item)
-    
-    return {"detail": "Product archived successfully"}

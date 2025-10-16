@@ -1,4 +1,3 @@
-import React from 'react';
 import { Edit, Trash2 } from 'lucide-react';
 
 const DashboardTable = ({ data, columns, handleAction, isEditable }) => (
@@ -23,11 +22,15 @@ const DashboardTable = ({ data, columns, handleAction, isEditable }) => (
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item[col.key] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                                         {item[col.key] ? 'Yes' : 'No'}
                                     </span>
+                                ) : col.key === 'is_archived' ? (
+                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item[col.key] ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }`}>
+                                        {item[col.key] ? 'Archived' : 'Available'}
+                                    </span>
                                 ) : (
-                                    // Default rendering for all other columns
                                     item[col.key]
                                 )}
                             </td>
+                            
                         ))}
                         {isEditable && (
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">

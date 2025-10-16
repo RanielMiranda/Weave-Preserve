@@ -15,28 +15,20 @@ async def create_donation(
     # Use get_current_user as any logged-in user can donate
     current_user=Depends(get_current_user) 
 ):
-    """
-    Records a new donation and updates the associated fundraising campaign's collected amount.
-    """
-    # 1. Fetch the target campaign
+
     campaign = session.get(Fundraising, donation_in.campaign_id)
     if not campaign:
         raise HTTPException(status_code=404, detail="Fundraising Campaign not found")
         
-    # 2. Check if the donation amount is valid
     if donation_in.amount <= 0:
         raise HTTPException(status_code=400, detail="Donation amount must be positive")
-
-    # 3. Create the Donation object
-    # The DonationCreate model should include campaign_id, amount, and user_id (optional on model)
+    
     donation_data = donation_in.dict()
-    donation_data["customer_id"] = current_user.id # Set customer_id from authenticated user
+    donation_data["customer_id"] = current_user.id 
     donation = Donation.from_orm(donation_data)
     
-    # 4. Update the campaign's collected amount
     campaign.collected_amount += donation.amount
     
-    # 5. Commit both changes in a single transaction
     session.add(donation)
     session.add(campaign)
     session.commit()

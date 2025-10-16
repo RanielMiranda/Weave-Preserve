@@ -55,8 +55,6 @@ export default function Campaigns() {
     }
 
     // --- Render Logic ---
-
-    // Loading State
     if (isLoading) {
         return (
             <div className="flex justify-center items-center min-h-screen text-xl text-slate-600">
@@ -64,8 +62,6 @@ export default function Campaigns() {
             </div>
         );
     }
-
-    // Error State
     if (error) {
         return (
             <div className="flex justify-center items-center min-h-screen text-xl text-red-600">
@@ -73,8 +69,6 @@ export default function Campaigns() {
             </div>
         );
     }
-
-
     return (
         <section className="py-16 bg-gradient-to-br from-orange-50 to-fuchsia-50 min-h-screen relative">
             

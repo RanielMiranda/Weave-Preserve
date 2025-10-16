@@ -60,36 +60,8 @@ INITIAL_CAMPAIGN_DATA = [
 
 INITIAL_PRODUCT_DATA = [
     {
-        "name": "Kinabakul Heritage Shawl",
-        "description": "A beautifully intricate hand-woven shawl using traditional Kinabakul patterns.",
-        "price": 4500.00,
-        "image": "https://images.unsplash.com/photo-1621379373981-d4193d56f16c",
-        "status": "Available",
-        "is_archived": False
-    },
-    {
-        "name": "Abel Iloco Table Runner",
-        "description": "High-quality cotton table runner woven in the classic Abel Iloco style.",
-        "price": 2800.00,
-        "image": "https://images.unsplash.com/photo-1621379374021-d779f45616b3",
-        "status": "Available",
-        "is_archived": False
-    },
-    {
-        "name": "T'nalak Weave Pouch",
-        "description": "A small pouch made from authentic T'nalak weave, perfect for accessories.",
-        "price": 1200.00,
-        "image": "https://images.unsplash.com/photo-1549414275-58d042d7b1d9",
-        "status": "Available",
-        "is_archived": False
-    },
-]
-
-INITIAL_PRODUCT_DATA = [
-    {
         "name": "Cordillera Wall Hanging",
         "price": 595.00,
-        "status": "Available",
         "description": "Handwoven Wall Decor handmade by our Baguio Locals.",
         "image": "https://files.catbox.moe/yaap40.jpg",
         "is_archived": False
@@ -97,7 +69,6 @@ INITIAL_PRODUCT_DATA = [
     {
         "name": "Inabel Super Brocade Twin Blanket",
         "price": 8107.81,
-        "status": "Available",
         "description": "Inabel, sometimes referred to as Abel Iloco or simply Abel, is a weaving tradition native to the Ilocano people of Northern Luzon in the Philippines. The textile it produces is sought after in the fashion and interior design industries due to its softness, durability, suitability in tropical climates, and for its austere design patterns.",
         "image": "https://files.catbox.moe/wnw7it.webp",
         "is_archived": False
@@ -105,7 +76,6 @@ INITIAL_PRODUCT_DATA = [
     {
         "name": "Ikat Weave on Bamboo Table Runner - Red",
         "price": 2313.62,
-        "status": "Available", # Corrected key and standardized value
         "description": "These ikat weave bamboo table runners were handcrafted by independent Balinese artisans. Ikat dyeing is a traditional technique that has been passed down through generations. Add these trendy runners to your table for a pop of colour. (Specifications: Handcrafted in Bali, Cotton weave on bamboo, 180 CM L)",
         "image": "https://files.catbox.moe/hvwfrc.webp",
         "is_archived": False
@@ -113,7 +83,6 @@ INITIAL_PRODUCT_DATA = [
     {
         "name": "VMWI1 - Kalinga Infinity Scarf",
         "price": 3600,
-        "status": "Available",
         "description": "From Makabayan Wear, this is a more modern scarf design using traditional fabric hand woven by the renowned indigenous weavers of kalinga, Philipipnes",
         "image": "https://files.catbox.moe/wnfxbd.png"
     }

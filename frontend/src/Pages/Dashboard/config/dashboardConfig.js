@@ -7,12 +7,13 @@ export const dashboardConfig = {
             { key: 'id', header: 'ID' },
             { key: 'name', header: 'Name' },
             { key: 'price', header: 'Price' },
-            { key: 'status', header: 'Status' },
+            { key: 'is_archived', header: 'Archived' },
+            // -------------------------------------------------
         ],
         fields: [
             { name: 'name', label: 'Name', type: 'text' },
             { name: 'price', label: 'Price', type: 'number' },
-            { name: 'status', label: 'Status', type: 'text' },
+            // ----------------------------------------------------------------------
             { name: 'description', label: 'Description', type: 'textarea' },
             { name: 'image', label: 'Image Path', type: 'text' },
             { name: 'is_archived', label: 'Is Archived', type: 'checkbox' },
