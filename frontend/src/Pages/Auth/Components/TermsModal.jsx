@@ -4,11 +4,11 @@ import { X } from 'lucide-react';
 
 // Random data collection points for the modal content
 const termsContent = [
-    "1. **Log Data:** We automatically collect standard information that your browser sends, such as your IP address, browser type, pages you visit, and time spent on those pages.",
-    "2. **Cookies:** We use cookies to remember your preferences and customize your experience. You can choose to disable cookies in your browser settings.",
-    "3. **Personal Information:** We collect your name and email only for account registration and transactional communications.",
-    "4. **Usage Metrics:** We track site usage and interaction metrics to improve site functionality and user interface.",
-    "5. **Data Security:** We employ industry-standard security measures to protect your data from unauthorized access or disclosure.",
+    "1. Log Data: We automatically collect standard information that your browser sends, such as your IP address, browser type, pages you visit, and time spent on those pages.",
+    "2. Cookies: We use cookies to remember your preferences and customize your experience. You can choose to disable cookies in your browser settings.",
+    "3. Personal Information: We collect your name and email only for account registration and transactional communications.",
+    "4. Usage Metrics: We track site usage and interaction metrics to improve site functionality and user interface.",
+    "5. Data Security: We employ industry-standard security measures to protect your data from unauthorized access or disclosure.",
 ];
 
 export default function TermsModal({ isOpen, onClose }) {

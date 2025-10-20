@@ -28,6 +28,7 @@ async def create_donation(
     donation = Donation.from_orm(donation_data)
     
     campaign.collected_amount += donation.amount
+    campaign.supporters += 1
     
     session.add(donation)
     session.add(campaign)

@@ -50,6 +50,7 @@ export const dashboardConfig = {
             { key: 'title', header: 'Title' },
             { key: 'goal_amount', header: 'Goal' },
             { key: 'collected_amount', header: 'Collected' },
+            { key: 'supporters', header: 'Supporters' },
             { key: 'status', header: 'Status' },
         ],
         fields: [

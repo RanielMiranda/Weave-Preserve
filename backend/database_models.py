@@ -107,6 +107,7 @@ class FundraisingBase(SQLModel):
     description: str | None = None
     status: str = "Active"
     collected_amount: float = 0.0
+    supporters: int = 0
     image: str | None = None
 
 class Fundraising(FundraisingBase, table=True):

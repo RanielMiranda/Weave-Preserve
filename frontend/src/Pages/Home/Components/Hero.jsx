@@ -2,11 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Img1 from '../../../Assets/Photos/Hero1.jpg';
-import Img2 from '../../../Assets/Photos/Hero2.jpg';
-import Img3 from '../../../Assets/Photos/Hero3.jpg';
-import Img4 from '../../../Assets/Photos/Hero4.jpg';
-
+import Img1 from '../../../Assets/Photos/Home/Hero1.jpg';
+import Img2 from '../../../Assets/Photos/Home/Hero2.jpg';
+import Img3 from '../../../Assets/Photos/Home/Hero3.jpg';
+import Img4 from '../../../Assets/Photos/Home/Hero4.jpg';
 
 const Hero = () => {
   return (

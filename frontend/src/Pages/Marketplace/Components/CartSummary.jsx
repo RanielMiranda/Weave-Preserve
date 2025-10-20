@@ -7,8 +7,12 @@ const CartSummary = ({ cart, products, checkout }) => {
 
     const totalAmount = cart.reduce((sum, item) => {
         const product = products.find(p => p.id === item.id);
-        return sum + (product ? product.price * item.quantity : 0);
+        const total = sum + (product ? product.price * item.quantity : 0);
+        return Math.round(total * 100) / 100;
     }, 0);
+
+    // totalamount seperated by commas for thousands
+    const formattedTotalAmount = totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     return (
         <div className="mt-16 sticky bottom-0 bg-white p-6 rounded-xl shadow-2xl border-t-4 border-fuchsia-500 max-w-lg mx-auto">
@@ -18,7 +22,7 @@ const CartSummary = ({ cart, products, checkout }) => {
                     Your Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)} items)
                 </h2>
                 <span className="text-2xl font-extrabold text-orange-600">
-                    ₱{totalAmount}
+                    ₱{formattedTotalAmount}
                 </span>
             </div>
 
@@ -31,7 +35,7 @@ const CartSummary = ({ cart, products, checkout }) => {
                                 {product.name}
                             </span>
                             <span className="text-slate-900 font-bold">
-                                x{item.quantity} (₱{product.price * item.quantity})
+                                x{item.quantity} (₱{Math.round(product.price * item.quantity) * 100 / 100})
                             </span>
                         </div>
                     ) : null;

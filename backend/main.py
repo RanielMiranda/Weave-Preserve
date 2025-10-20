@@ -68,14 +68,14 @@ INITIAL_PRODUCT_DATA = [
     },
     {
         "name": "Inabel Super Brocade Twin Blanket",
-        "price": 8107.81,
+        "price": 8107,
         "description": "Inabel, sometimes referred to as Abel Iloco or simply Abel, is a weaving tradition native to the Ilocano people of Northern Luzon in the Philippines. The textile it produces is sought after in the fashion and interior design industries due to its softness, durability, suitability in tropical climates, and for its austere design patterns.",
         "image": "https://files.catbox.moe/wnw7it.webp",
         "is_archived": False
     },
     {
         "name": "Ikat Weave on Bamboo Table Runner - Red",
-        "price": 2313.62,
+        "price": 2313,
         "description": "These ikat weave bamboo table runners were handcrafted by independent Balinese artisans. Ikat dyeing is a traditional technique that has been passed down through generations. Add these trendy runners to your table for a pop of colour. (Specifications: Handcrafted in Bali, Cotton weave on bamboo, 180 CM L)",
         "image": "https://files.catbox.moe/hvwfrc.webp",
         "is_archived": False
@@ -104,17 +104,6 @@ def create_initial_admin(session: Session):
         session.add(admin_user)
         session.commit()
         print("Initial Admin created.")
-
-    def create_initial_products(session: Session):
-        """Inserts initial product data if the products table is empty."""
-        existing_products = session.exec(select(Product)).first()
-        if not existing_products:
-            print("Inserting initial product data...")
-            for data in INITIAL_PRODUCT_DATA:
-                product = Product(**data)
-                session.add(product)
-            session.commit()
-            print(f"Successfully inserted {len(INITIAL_PRODUCT_DATA)} products.")
 
 def create_initial_campaigns(session: Session):
     """Inserts initial campaign data if the campaigns table is empty."""
