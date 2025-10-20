@@ -1,5 +1,6 @@
 import React from 'react';
 import { Heart, ShoppingCart, Star, Search, Filter } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ProductGrid = ({ products, searchTerm, setSearchTerm, addToCart }) => {
     return (
@@ -26,7 +27,11 @@ const ProductGrid = ({ products, searchTerm, setSearchTerm, addToCart }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <div key={product.id} className="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.03] transition-all duration-500 group border border-gray-100">
+                        <Link 
+                            to={`/product/${product.id}`} 
+                            key={product.id}
+                            className="block bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.03] transition-all duration-500 group border border-gray-100"
+                        >
                             <div className="relative">
                                 <img
                                     src={product.image}
@@ -68,7 +73,7 @@ const ProductGrid = ({ products, searchTerm, setSearchTerm, addToCart }) => {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 ) : (
                     <div className="lg:col-span-4 text-center py-10">

@@ -5,7 +5,8 @@ import './index.css';
 
 import MainLayout from './Layouts/MainLayout';
 import Home from './Pages/Home/Home.jsx';
-import Marketplace from './Pages/MarketPlace/Marketplace.jsx';
+import Marketplace from './Pages/Marketplace/Marketplace.jsx';
+import ProductDetails from './Pages/Marketplace/Components/ProductDetails.jsx';
 import Campaigns from './Pages/Campaigns/Campaigns.jsx';
 import Stories from './Pages/Stories/Stories.jsx';
 import Checkout from './Pages/Checkout/Checkout.jsx';
@@ -35,6 +36,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </MainLayout>
           }
         />
+        <Route path="/product/:id"
+          element={
+            <MainLayout isLoggedInInfo={true}>
+              <ProductDetails />
+            </MainLayout>
+          }
+        />        
         <Route path="/stories"
           element={
             <MainLayout isLoggedInInfo={true}>
@@ -49,16 +57,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </MainLayout>
           }
         />
-        <Route
-          path="/checkout"
+        <Route path="/checkout"
           element={
             <MainLayout isLoggedInInfo={true}>
               <Checkout />
             </MainLayout>
           }
         />
-        <Route
-          path="/dashboard"
+        <Route path="/dashboard"
           element={
             <MainLayout isLoggedInInfo={true}>
               <Dashboard />

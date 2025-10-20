@@ -20,6 +20,13 @@ def list_all_products(
     # This returns everything in the table
     return session.exec(select(Product)).all()
 
+@router.get("/{product_id}", response_model=ProductRead)
+def get_product(product_id: int, session: Session = Depends(get_session)):
+    db_item = session.get(Product, product_id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return db_item
+
 @router.post("/", response_model=ProductRead)
 def create_product(
     product: ProductCreate,

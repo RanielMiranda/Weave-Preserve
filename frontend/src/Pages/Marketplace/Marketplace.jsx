@@ -71,7 +71,6 @@ const Marketplace = () => {
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // 👇 RENDER LOGIC UPDATE 👇
     return (
         <div className="min-h-screen font-sans bg-gray-50">
             <section className="py-16">
